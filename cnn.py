@@ -11,12 +11,9 @@ st.set_page_config(page_title="CNN Visualizer", page_icon="🧙🏽‍♂️", l
 st.title("VISUALIZER HEADING")
 
 # Load pretrained model
-def load():
-    model = mod.resnet18(pretrained=True)
-    model.eval()  # inference, not training
-    return model
+model = mod.resnet18(pretrained=True)
+model.eval()
 
-model = load()
 
 # Image transforms
 transform = trans.Compose([
@@ -24,12 +21,6 @@ transform = trans.Compose([
     trans.ToTensor(),
     trans.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
-
-# Denormalize for visualization
-def denormalize(img_tensor):
-    mean = torch.tensor([0.485, 0.456, 0.406]).view(3, 1, 1)
-    std = torch.tensor([0.229, 0.224, 0.225]).view(3, 1, 1)
-    return img_tensor * std + mean
 
 # Upload image
 uploaded = st.file_uploader("UPLOAD AN IMAGE", type=["jpg", "png", "jpeg"])
