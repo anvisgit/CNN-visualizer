@@ -10,19 +10,18 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="CNN Visualizer", page_icon="🧙🏽‍♂️", layout="wide")
 st.title("VISUALIZER HEADING")
 
-# Load pretrained model
+# Loas
 model = mod.resnet18(pretrained=True)
 model.eval()
 
 
-# Image transforms
+# transform image
 transform = trans.Compose([
     trans.Resize((224, 224)),
     trans.ToTensor(),
     trans.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-# Upload image
 uploaded = st.file_uploader("UPLOAD AN IMAGE", type=["jpg", "png", "jpeg"])
 if uploaded:
     image = Image.open(uploaded).convert("RGB")
@@ -37,10 +36,10 @@ if uploaded:
 
     st.subheader("Feature Maps")
 
-    # Show first 10 fmaps bs
+    # Show first n fmaps bs
     for i in range(5):
         fmap = first_layer[0, i].cpu().numpy()
-        fmap = (fmap - fmap.min()) / (fmap.max() - fmap.min() + 1e-5)  # normalize to [0,1] (fixed)
+        fmap = (fmap - fmap.min()) / (fmap.max() - fmap.min() + 1e-5)  # normalize to [0,1] (fixed yay)
         st.image(fmap, caption=f"Feature map {i+1}", use_column_width=True)
 
 else:
